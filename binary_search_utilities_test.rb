@@ -1,17 +1,5 @@
 require "./bs"
 
-
-def test_bfs(tree, data, expect_msg)
-  puts "__________________________________________________________________"
-  puts "\nBreadth-first-search for #{data}:"
-  puts "Expected:  #{expect_msg}\n "
-  node = tree.breadth_first_search(data)
-  p node
-  node.show_stats unless node.nil?
-  puts "End of Test..."
-  puts "__________________________________________________________________"
-end
-
 def test_show_binary_tree(tree, array)
   puts "=================================================================="
   puts "\nBuilding Tree..."
@@ -148,15 +136,3 @@ test_show_binary_tree(b, arr8a)
 
 test_title("Array: Random numbers (10) between -50000 and 50000")
 test_show_binary_tree(b, arr8b)
-
-
-
-
-
-
-
-
-# testing bfs for ......   arr2"
-# test_bfs(b, 3, "Node found: parent 2")
-# test_bfs(b, 6, "nil")
-# test_bfs(b, 0, "Node found: root, parent: nil, lc: -2, rc: 2")

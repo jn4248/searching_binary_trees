@@ -7,6 +7,9 @@ class BinaryTree
     @root = root_node
   end
 
+  # define the binary tree data by reading the contents of an array.
+  # Over-writes exisitng data if called on an existing tree.
+  # Considers an empty tree (root = nil) to not contain 'nil'
   def build_tree(data_array)
     @root = nil  # overwrites tree, even if array is empty
     data_array.each_with_index do |data, index|
@@ -38,19 +41,41 @@ class BinaryTree
     return node_match
   end
 
+  # Same method as breadth_first_search, but with debugging output that lists
+  # the number nodes visited, and the actual order visited.
+  def breadth_first_search_with_debug(data)
+    search_order = []                                         # For Debug output
+    queue = [@root]
+    node_match = nil
+    match_found = false
+    until queue.empty? || match_found || @root.nil?
+      cur_node = queue.first
+      next_node_value = cur_node.nil? ? "nil" : cur_node.value # For Debug output
+      search_order << next_node_value                         # For Debug output
+      if cur_node.value == data
+        match_found = true
+        node_match = cur_node
+      else
+        queue.push(cur_node.left_child) unless cur_node.left_child.nil?
+        queue.push(cur_node.right_child) unless cur_node.right_child.nil?
+        queue.shift
+      end
+    end
+    puts "Breadth-first search order for nodes visited:"      # For Debug output
+    p search_order                                            # For Debug output
+    puts "\nTotal nodes visited:  #{search_order.size}"       # For Debug output
+    return node_match
+  end
+
   # Iterative Pre-Order depth-first search (Parent -> Left Child -> Right Child)
   # Returns, from the binary tree, the node which contains 'data'
   # Returns 'nil' if no match is found, or if tree is empty (Root = nil).
   def depth_first_search_pre_order(data)
-    puts "\nPre_order DFS: Searching for data: '#{data}'"
-    search_order = []
     stack = [@root]
     node_match = nil
     match_found = false
     until stack.empty? || match_found || @root.nil?
       cur_node = stack.pop
-      next_node_value = cur_node.nil? ? "nil" : cur_node.value
-      search_order << next_node_value
       if cur_node.value == data
         match_found = true
         node_match = cur_node
@@ -60,76 +85,66 @@ class BinaryTree
       left = cur_node.left_child
       stack.push(left) unless left.nil?
     end
-    puts "Pre_order depth-first search order for nodes visited was:"
-    p search_order
     return node_match
   end
 
-  # Iterative Post-Order depth-first search (Left Child -> Right Child -> Parent)
+  # Same method as depth_first_search_pre_order (iterative), but with debugging
+  # output that lists the number nodes visited, and the actual order visited.
+  def depth_first_search_pre_order_with_debug(data)
+    search_order = []                                        # For Debug output
+    stack = [@root]
+    node_match = nil
+    match_found = false
+    until stack.empty? || match_found || @root.nil?
+      cur_node = stack.pop
+      next_node_value = cur_node.nil? ? "nil" : cur_node.value # For Debug output
+      search_order << next_node_value                         # For Debug output
+      if cur_node.value == data
+        match_found = true
+        node_match = cur_node
+      end
+      right = cur_node.right_child
+      stack.push(right) unless right.nil?
+      left = cur_node.left_child
+      stack.push(left) unless left.nil?
+    end
+    puts "Pre_order depth-first search order for nodes visited:" # For Debug output
+    p search_order                                            # For Debug output
+    puts "\nTotal nodes visited:  #{search_order.size}"       # For Debug output
+    return node_match
+  end
+
+  # Recursive Pre-Order depth-first search (Parent -> Left Child -> Right Child)
   # Returns, from the binary tree, the node which contains 'data'
   # Returns 'nil' if no match is found, or if tree is empty (Root = nil).
-  def depth_first_search_post_order(data)
-    puts "\nPost_order DFS: Searching for data: '#{data}'"
-    search_order = []
-    stack = [@root]
+  def dfs_rec(data, cur_node = @root)
     node_match = nil
-    match_found = false
-    until stack.empty? || match_found || @root.nil?
-      cur_node = stack.pop
-      next_node_value = cur_node.nil? ? "nil" : cur_node.value
-      search_order << next_node_value
+    unless cur_node.nil?
       if cur_node.value == data
-        match_found = true
         node_match = cur_node
+      else
+        # check for matches along each child path ('nil' returned = no match found)
+        unless cur_node.left_child.nil?
+          left_match = dfs_rec(data, cur_node.left_child)
+          node_match = left_match unless left_match.nil?
+        end
+        unless cur_node.right_child.nil?
+          right_match = dfs_rec(data, cur_node.right_child)
+          node_match = right_match unless right_match.nil?
+        end
       end
-      right = cur_node.right_child
-      stack.push(right) unless right.nil?
-      left = cur_node.left_child
-      stack.push(left) unless left.nil?
     end
-    puts "Post_order depth-first search order for nodes visited was:"
-    p search_order
     return node_match
   end
 
-  # Iterative In-Order depth-first search (Left Child -> Parent -> Right Child)
-  # Returns, from the binary tree, the node which contains 'data'
-  # Returns 'nil' if no match is found, or if tree is empty (Root = nil).
-  def depth_first_search_in_order(data)
-    puts "\nIn_order DFS: Searching for data: '#{data}'"
-    search_order = []
-    stack = [@root]
-    node_match = nil
-    match_found = false
-    until stack.empty? || match_found || @root.nil?
-      cur_node = stack.pop
-      next_node_value = cur_node.nil? ? "nil" : cur_node.value
-      search_order << next_node_value
-      if cur_node.value == data
-        match_found = true
-        node_match = cur_node
-      end
-      right = cur_node.right_child
-      stack.push(right) unless right.nil?
-      left = cur_node.left_child
-      stack.push(left) unless left.nil?
-    end
-    puts "In_order depth-first search order for nodes visited was:"
-    p search_order
-    return node_match
-  end
 
-  # recursive depth-first search
-  def dfs_rec
-
-  end
-
+  # Displays the binary tree to console with minor formatting
   def show_binary_tree
     text = tree_levels_text_array
-    puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    puts "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     puts "\nBinary Tree Display:\n "
     text.each { |row| puts "\n" + row }
-    puts "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    puts "\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   end
 
 
