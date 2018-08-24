@@ -12,6 +12,7 @@ Three search methods are implemented for the binary tree class:
 * Recursive pre-order depth-first search
 
 Binary trees are assumed to contain elements of the same (or compatible) data types, and the search methods allow for their search parameter to be of a different variable type than that of the binary tree elements.
+
 Note that there is an alternate implementation of the recursive pre-order depth-first search method which has slightly more simple code, but requires all elements in the binary tree (ie: in the array used to create the binary tree), to be of the same data type (eg: trying to search for "do" in a binary tree of integers fails because you can't use '>' to compare these two types, however the other implementation allows you compare a binary tree that was constructed using both integers and floats).
 
 There are also two separate test files that show console output.  `binary_search_test.rb` tests the three main methods listed above, while `binary_search_utilities_test` provides additional testing for the extra helper methods that were created.
