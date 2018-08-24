@@ -1,4 +1,4 @@
-require "./bs"
+require "./binary_search"
 
 def test_show_binary_tree(tree, array)
   puts "=================================================================="

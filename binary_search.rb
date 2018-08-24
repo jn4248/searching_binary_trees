@@ -10,6 +10,7 @@ class BinaryTree
   # define the binary tree data by reading the contents of an array.
   # Over-writes exisitng data if called on an existing tree.
   # Considers an empty tree (root = nil) to not contain 'nil'
+  # Assumes all items in the data array are of similar, or compatible, data type.
   def build_tree(data_array)
     @root = nil  # overwrites tree, even if array is empty
     data_array.each_with_index do |data, index|
@@ -23,6 +24,7 @@ class BinaryTree
 
   # Returns, from the binary tree, the node which contains 'data'
   # Returns 'nil' if no match is found, or if tree is empty (Root = nil).
+  # Note: Handles case where data searched for and tree are not the same type
   def breadth_first_search(data)
     queue = [@root]
     node_match = nil
@@ -43,6 +45,7 @@ class BinaryTree
 
   # Same method as breadth_first_search, but with debugging output that lists
   # the number nodes visited, and the actual order visited.
+  # Note: Handles case where data searched for and tree are not the same type
   def breadth_first_search_with_debug(data)
     search_order = []                                         # For Debug output
     queue = [@root]
@@ -70,6 +73,7 @@ class BinaryTree
   # Iterative Pre-Order depth-first search (Parent -> Left Child -> Right Child)
   # Returns, from the binary tree, the node which contains 'data'
   # Returns 'nil' if no match is found, or if tree is empty (Root = nil).
+  # Note: Handles case where data searched for and tree are not the same type
   def depth_first_search_pre_order(data)
     stack = [@root]
     node_match = nil
@@ -90,6 +94,7 @@ class BinaryTree
 
   # Same method as depth_first_search_pre_order (iterative), but with debugging
   # output that lists the number nodes visited, and the actual order visited.
+  # Note: Handles case where data searched for and tree are not the same type
   def depth_first_search_pre_order_with_debug(data)
     search_order = []                                        # For Debug output
     stack = [@root]
@@ -117,9 +122,12 @@ class BinaryTree
   # Recursive Pre-Order depth-first search (Parent -> Left Child -> Right Child)
   # Returns, from the binary tree, the node which contains 'data'
   # Returns 'nil' if no match is found, or if tree is empty (Root = nil).
+  # Note: Handles case where data searched for and tree are not the same type
   def dfs_rec(data, cur_node = @root)
     node_match = nil
+    # no match possible if node is 'nil'
     unless cur_node.nil?
+      # check for match
       if cur_node.value == data
         node_match = cur_node
       else
@@ -136,6 +144,31 @@ class BinaryTree
     end
     return node_match
   end
+
+   # Note: alternative version of recursive depth-first search, but can only be
+   #       used if the tree is all of the same data type (ie; can't compare
+   #       strings and integers using '>' or "<", but you can compare integers
+   #       and floats...that's why I implemented as above...).  Would have to
+   #       pre-format arrays used to create the binary tree, to ensure that
+   #       they are all of the same type.
+  # def dfs_rec(data, cur_node = @root)
+  #   node_match = nil
+  #   # no match possible if node is 'nil'
+  #   unless cur_node.nil? || cur_node.value.class != data.class
+  #     # check for match
+  #     if cur_node.value == data
+  #       node_match = cur_node
+  #     else
+  #       # check for matches along each child path ('nil' returned = no match found)
+  #       if data < cur_node.value
+  #         node_match = dfs_rec(data, cur_node.left_child)
+  #       else
+  #         node_match = dfs_rec(data, cur_node.right_child)
+  #       end
+  #     end
+  #   end
+  #   return node_match
+  # end
 
 
   # Displays the binary tree to console with minor formatting

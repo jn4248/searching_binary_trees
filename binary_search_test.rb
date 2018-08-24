@@ -1,4 +1,4 @@
-require "./bs"
+require "./binary_search"
 
 # Method to set up a binary tree with an array of data and display the tree
 def set_next_binary_tree(tree, arr)
@@ -81,6 +81,7 @@ arr3 = [3]
 arr4 = []
 arr5 = %w{Do hi Do AS as do lo Hi}
 arr6 = [0, -3, -2, -1, 3, 4, 5]
+arr7 = [0, -2, 2, -1.5, 1.5, -2.5, 2.5]  # test mixed similar data types
 
 # Binary tree object used for testing
 b = BinaryTree.new()
@@ -162,6 +163,21 @@ msg = "nil (not found)"
 test_bfs(b, nil, msg)
 test_dfs_pre(b, nil, msg)
 test_dfs_rec(b, nil, msg)
+msg = "nil (not found)"
+test_bfs(b, 10000, msg)
+test_dfs_pre(b, 10000, msg)
+test_dfs_rec(b, 10000, msg)
+
+# Test array arr7  - mixed elements
+set_next_binary_tree(b, arr7)
+msg = "Node: -1.5  (Left Child: nil  Right Child: nil  Parent: -2)"
+test_bfs(b, -1.5, msg)
+test_dfs_pre(b, -1.5, msg)
+test_dfs_rec(b, -1.5, msg)
+msg = "Node: 2  (Left Child: 1.5  Right Child: 2.5  Parent: 0)"
+test_bfs(b, 2, msg)
+test_dfs_pre(b, 2, msg)
+test_dfs_rec(b, 2, msg)
 msg = "nil (not found)"
 test_bfs(b, 10000, msg)
 test_dfs_pre(b, 10000, msg)
